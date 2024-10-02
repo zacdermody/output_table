@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-  "build": "vite build",
-  "dev": "vite",
-  "lint": "eslint .",
-  "preview": "vite preview",
-  "deploy": "gh-pages -d dist"
+    "build": "vite build",
+    "dev": "vite",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.15",
