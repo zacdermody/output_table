@@ -88,7 +88,7 @@
 
 /* Table body cells */
 .schedule-table tbody td {
-  padding: 8px;
+  padding: 6px;
   text-align: center;
   border: 1px solid #D9E8F5; /* Light blue border */
   color: #595A5C; /* Gray text for content */
