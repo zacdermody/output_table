@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './TableComponent.css';
 import EditFeatureComponent from './EditFeatureComponent';
-import FilterComponent from './FilterComponent'; // Import the Filter Component
+import FilterComponent from './FilterComponent';
+import ResidentDetailsComponent from './ResidentDetailsComponent'; // Import ResidentDetailsComponent
 
 const TableComponent = ({ data, times, weeksPerPage }) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [filteredData, setFilteredData] = useState(data); // Use state to hold filtered data
+  const [filteredData, setFilteredData] = useState(data);
   const [filterText, setFilterText] = useState('');
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [residentDetails, setResidentDetails] = useState(null); // State for selected resident details
 
   const totalPages = Math.ceil(times.length / weeksPerPage);
 
-  // Get the weeks for the current page
   const startWeek = currentPage * weeksPerPage;
   const endWeek = startWeek + weeksPerPage;
   const currentTimes = times.slice(startWeek, endWeek);
@@ -44,10 +45,17 @@ const TableComponent = ({ data, times, weeksPerPage }) => {
     setFilterText(text);
   };
 
-  // Filter residents based on the filter text
+  const handleResidentClick = (resident) => {
+    setResidentDetails(resident); // Show resident details when name is clicked
+  };
+
+  const handleCloseResidentDetails = () => {
+    setResidentDetails(null); // Close resident details modal
+  };
+
   useEffect(() => {
     if (filterText === '') {
-      setFilteredData(data); // If no filter, show all data
+      setFilteredData(data);
     } else {
       const filtered = data.filter((person) =>
         person.name.toLowerCase().includes(filterText.toLowerCase())
@@ -76,7 +84,12 @@ const TableComponent = ({ data, times, weeksPerPage }) => {
         <tbody>
           {filteredData.map((person, rowIndex) => (
             <tr key={rowIndex}>
-              <td>{person.name}</td>
+              <td
+                className="resident-name"
+                onClick={() => handleResidentClick(person)} // Trigger resident details on click
+              >
+                {person.name}
+              </td>
               {currentTimes.map((_, colIndex) => {
                 const assignment = person.assignments[startWeek + colIndex] || '-';
                 return (
@@ -122,6 +135,14 @@ const TableComponent = ({ data, times, weeksPerPage }) => {
           selectedWeek={selectedWeek}
           data={data}
           onClose={handleModalClose}
+        />
+      )}
+
+      {/* Resident Details Component */}
+      {residentDetails && (
+        <ResidentDetailsComponent
+          resident={residentDetails}
+          onClose={handleCloseResidentDetails}
         />
       )}
     </div>
